@@ -71,6 +71,8 @@ public class SolveCommandOneStep extends Command {
         }
 
         Question question = questionBank.getQuestion(questionIndex);
+        // Assertion: Ensure the retrieved question is not null
+        assert question != null : "Question should not be null at this point";
         String correctAnswer = question.getAnswer();
 
         if (userAnswer.equalsIgnoreCase(correctAnswer.trim())) {
