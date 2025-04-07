@@ -19,7 +19,6 @@ import mindexpander.logging.QuestionLogger;
  * @since 2025-03-31
  */
 public class DeleteCommand extends Command implements Traceable {
-    private static boolean isDeleteEnabled = true;
     private final int indexToDelete;
     private int targetIndex;
     private Question deletedQuestion;
@@ -39,12 +38,6 @@ public class DeleteCommand extends Command implements Traceable {
     public CommandResult execute() throws IllegalCommandException {
         assert lastShownBank != null : "lastShownBank must not be null";
 
-        if (!isDeleteEnabled) {
-            throw new IllegalCommandException(
-                    "Please run 'list' or 'find' to get an updated list before using delete."
-            );
-        }
-
         if (indexToDelete < 0 || indexToDelete >= lastShownBank.getQuestionCount()) {
             throw new IllegalCommandException("Invalid question index.");
         }
@@ -59,21 +52,7 @@ public class DeleteCommand extends Command implements Traceable {
         mainBank.removeQuestion(targetIndex);
         commandHistory.add(this);
         QuestionLogger.logDeletedQuestion(deletedQuestion);
-        isDeleteEnabled = false; // disable further deletes
         return new CommandResult("Deleted question: " + deletedQuestion);
-    }
-
-    public static DeleteCommand parseFromUserInput(String taskDetails, QuestionBank main,
-                                                   QuestionBank lastShown, CommandHistory commandHistory) {
-        if (taskDetails.isEmpty()) {
-            throw new IllegalCommandException("Please provide a question index to delete.");
-        }
-        try {
-            int index = Integer.parseInt(taskDetails.trim());
-            return new DeleteCommand(index, main, lastShown, commandHistory);
-        } catch (NumberFormatException e) {
-            throw new IllegalCommandException("Invalid number format. Please enter a valid index.");
-        }
     }
 
     @Override
@@ -92,14 +71,6 @@ public class DeleteCommand extends Command implements Traceable {
 
     public String redoMessage() {
         return String.format("%1$s successfully deleted.", deletedQuestion);
-    }
-
-    public static void disableDelete() {
-        isDeleteEnabled = false;
-    }
-
-    public static void enableDelete() {
-        isDeleteEnabled = true;
     }
 
 }

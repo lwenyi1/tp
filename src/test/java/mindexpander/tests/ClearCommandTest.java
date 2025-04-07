@@ -5,12 +5,10 @@ import mindexpander.commands.Command;
 import mindexpander.data.CommandHistory;
 import mindexpander.data.QuestionBank;
 import mindexpander.data.question.FillInTheBlanks;
-import mindexpander.exceptions.IllegalCommandException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ClearCommandTest {
     private QuestionBank questionBank;
@@ -35,7 +33,7 @@ public class ClearCommandTest {
         ClearCommand clearCommand = new ClearCommand(qb, history);
 
         // Simulate 'y' input
-        Command resultCommand = clearCommand.handleMultistepCommand("y");
+        Command resultCommand = clearCommand.handleMultistepCommand("clear","y");
         assertEquals("All questions have been cleared.", resultCommand.getCommandMessage());
         assertEquals(0, qb.getQuestionCount());
     }
@@ -50,19 +48,9 @@ public class ClearCommandTest {
         ClearCommand clearCommand = new ClearCommand(qb, history);
 
         // Simulate 'n' input
-        Command resultCommand = clearCommand.handleMultistepCommand("n");
+        Command resultCommand = clearCommand.handleMultistepCommand("clear","n");
         assertEquals("Clear command cancelled.", resultCommand.getCommandMessage());
         assertEquals(1, qb.getQuestionCount());
     }
-
-
-    @Test
-    public void testClearCommandInvalidInputThrowsException() {
-        IllegalCommandException exception = assertThrows(IllegalCommandException.class, () ->
-                ClearCommand.parseFromUserInput("clear now", questionBank, history)
-        );
-        assertEquals("Invalid usage. Just type: clear", exception.getMessage());
-    }
-
 }
 
