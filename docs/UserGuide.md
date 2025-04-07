@@ -524,6 +524,7 @@ Editing MCQ: What are fries made of? [Answer: Potato]
 ==============================
 ```
 2. `3`
+
 ```
 ==============================
 Please enter the new option
@@ -577,7 +578,7 @@ Removes a question from the question bank. The question index should refer to th
 
 ---
 
-#### ✅ Example usage (after `list`):
+#### Example usage (after `list`):
 ```
 list
 ==============================
