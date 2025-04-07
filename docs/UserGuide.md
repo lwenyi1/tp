@@ -612,7 +612,7 @@ Removes a question from the question bank. The question index should refer to th
 
 ---
 
-#### ✅ Example usage (after `list`):
+#### Example usage (after `list`):
 
 ```
 list
